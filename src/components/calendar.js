@@ -1,4 +1,10 @@
 import React from "react";
+import {
+  LuChevronLeft,
+  LuChevronRight,
+  LuChevronsLeft,
+  LuChevronsRight,
+} from "react-icons/lu";
 
 const Calendar = () => {
   const weekdays = [
@@ -60,9 +66,9 @@ const Calendar = () => {
 
       content.push(
         <div
-          className={`w-full h-16 bg-white rounded-lg ${
+          className={`w-full h-16 bg-white rounded-lg hover:shadow-lg transition-all hover:cursor-pointer ${
             today === i + 1 && isMonthDays === true
-              ? "border-2 border-red-300"
+              ? "border-2 border-indigo-300"
               : ""
           }`}
         >
@@ -82,7 +88,9 @@ const Calendar = () => {
       for (let i = 0; i < nextMonthDays; i++) {
         const nextMonthDate = new Date(year, month + 1, i + 1).getDate();
         content.push(
-          <div className={`w-full h-16 bg-white rounded-lg text-gray-400`}>
+          <div
+            className={`w-full h-16 bg-white rounded-lg text-gray-400 hover:shadow-lg transition-all hover:cursor-pointer`}
+          >
             <h3 className="text-xs text-gray-400">{nextMonthDate}</h3>
           </div>
         );
@@ -94,13 +102,25 @@ const Calendar = () => {
 
   return (
     <div className="w-1/2 text-center">
-      <div className="mb-2">
+      <div className="mb-2 flex items-center justify-between w-1/2 mx-auto">
+        <button>
+          <LuChevronsLeft />
+        </button>
+        <button>
+          <LuChevronLeft />
+        </button>
         <h3>
           {new Date(year, month, 1).toLocaleDateString("en-us", {
             month: "long",
           })}{" "}
           - {year}
         </h3>
+        <button>
+          <LuChevronRight />
+        </button>
+        <button>
+          <LuChevronsRight />
+        </button>
       </div>
       <div className="grid grid-cols-7 mb-2">
         {weekdays.map((day, index) => {
