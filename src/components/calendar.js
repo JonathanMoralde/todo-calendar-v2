@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   LuChevronLeft,
   LuChevronRight,
@@ -17,10 +17,13 @@ const Calendar = () => {
     "Saturday",
   ];
 
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [year, setYear] = useState(new Date().getFullYear());
+
   const dt = new Date();
   const today = dt.getDate();
-  const month = dt.getMonth();
-  const year = dt.getFullYear();
+  const monthToday = dt.getMonth();
+  const yearToday = dt.getFullYear();
 
   const firstDayOfMonth = new Date(year, month, 1);
   const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
@@ -66,32 +69,34 @@ const Calendar = () => {
 
       content.push(
         <div
-          className={`w-full h-16 bg-white rounded-lg hover:shadow-lg transition-all hover:cursor-pointer ${
-            today === i + 1 && isMonthDays === true
+          className={`w-full h-16 bg-white rounded-lg hover:shadow-lg transition-all hover:cursor-pointer pt-4 pb-2 flex flex-col justify-between ${
+            today === i + 1 && isMonthDays  === true && month === monthToday && year === yearToday
               ? "border-2 border-indigo-300"
               : ""
           }`}
         >
           {isMonthDays ? <h3 className="text-xs">{i + 1}</h3> : <div></div>}
           {isPrefix ? (
-            <h3 className="text-xs text-gray-400">{prefixDay}</h3>
+            <h3 className="text-xs text-gray-400 mb-1">{prefixDay}</h3>
           ) : (
             <div></div>
           )}
+          <div className="w-3/5 h-2 mx-auto rounded-t-lg bg-red-600"></div>
+
         </div>
       );
     }
 
     if (isNextMonth) {
-      // Calculate and display days for the next month
+      // Calculate and display days for the next mont
       const nextMonthDays = 42 - (days + blankDays); // 42 days in a 6x7 grid
       for (let i = 0; i < nextMonthDays; i++) {
         const nextMonthDate = new Date(year, month + 1, i + 1).getDate();
         content.push(
           <div
-            className={`w-full h-16 bg-white rounded-lg text-gray-400 hover:shadow-lg transition-all hover:cursor-pointer`}
+            className={`w-full h-16 bg-white rounded-lg text-gray-400 hover:shadow-lg transition-all hover:cursor-pointer py-4`}
           >
-            <h3 className="text-xs text-gray-400">{nextMonthDate}</h3>
+            <h3 className="text-xs text-gray-400 mb-1">{nextMonthDate}</h3>
           </div>
         );
       }
@@ -100,13 +105,38 @@ const Calendar = () => {
     return content;
   };
 
+  const changeDisplay = (isNext,isYear)=>{
+    if(isYear){
+      if(isNext){
+        setYear(year + 1)
+      }else{
+        setYear(year - 1)
+      }
+    }else{
+
+      if(isNext){
+        if(month === 11){
+          setMonth(0)
+        }else{
+          setMonth(month +1)
+        }
+      }else{
+        if(month === 0){
+          setMonth(11)
+        }else{
+          setMonth(month - 1)
+        }
+      }
+    }
+  }
+
   return (
     <div className="w-1/2 text-center">
       <div className="mb-2 flex items-center justify-between w-1/2 mx-auto">
         <button>
-          <LuChevronsLeft />
+          <LuChevronsLeft onClick={()=>{changeDisplay(false,true)}} />
         </button>
-        <button>
+        <button onClick={()=>{changeDisplay(false)}}>
           <LuChevronLeft />
         </button>
         <h3>
@@ -116,10 +146,10 @@ const Calendar = () => {
           - {year}
         </h3>
         <button>
-          <LuChevronRight />
+          <LuChevronRight onClick={()=>{changeDisplay(true)}} />
         </button>
         <button>
-          <LuChevronsRight />
+          <LuChevronsRight onClick={()=>{changeDisplay(true,true)}} />
         </button>
       </div>
       <div className="grid grid-cols-7 mb-2">

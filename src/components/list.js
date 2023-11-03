@@ -17,7 +17,7 @@ const List = () => {
               <input
                 type="checkbox"
                 id="checkbox1"
-                class="default:ring-2 me-2"
+                className="default:ring-2 me-2"
               />
               <label htmlFor="checkbox1">Todo Task Here</label>
             </div>
@@ -36,7 +36,7 @@ const List = () => {
               <input
                 type="checkbox"
                 id="checkbox2"
-                class="default:ring-2 me-2"
+                className="default:ring-2 me-2"
               />
               <label htmlFor="checkbox2">Todo Task Here</label>
             </div>
