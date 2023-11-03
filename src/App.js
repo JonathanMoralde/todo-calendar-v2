@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import Calendar from "./components/calendar";
+import List from "./components/list";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <main className="h-screen max-w-5xl py-24 mx-auto">
+      <header>
+        <h1 className="text-center mb-4 text-2xl font-semibold tracking-wider uppercase">
+          To-Do Calendar
+        </h1>
       </header>
-    </div>
+      <section className="flex">
+        <Calendar />
+        <List />
+      </section>
+    </main>
   );
 }
 
