@@ -1,48 +1,38 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { TodoCalendarContext } from "../context/TodoCalendartContext";
 import AddBtn from "./btn/styledBtn";
 import TodoItem from "./todoItem/todoItem";
-import { MdClose } from "react-icons/md";
 
 const List = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const toggleModal = () => {
-    setIsVisible(!isVisible);
-  };
+  const { date } = useContext(TodoCalendarContext);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const formattedDate = date.toLocaleDateString("en-us", options);
+
   return (
     <>
       <section className="w-1/2 ms-4 p-4 rounded-lg bg-white">
-        <div className="flex justify-between border-b-2 pb-1 mb-4">
-          <h3 className="">Date</h3>
-          <AddBtn btnText={"NEW TASK"} onClick={toggleModal} />
+        <h3 className="text-center mb-4 font-medium text-xl tracking-wide">
+          {formattedDate}
+        </h3>
+        <div className="mb-4 border-b pb-4">
+          <form className="flex justify-between">
+            <input
+              className="w-3/4 focus:outline-none bg-indigo-100 rounded-lg py-2 px-4"
+              type="text"
+              name="task"
+              id="newtask"
+              placeholder="Any plans on this day?"
+            />
+            <AddBtn
+              btnText={"New Task"}
+              onClick={() => console.log("clicked")}
+            />
+          </form>
         </div>
         <div className="flex flex-col">
           <TodoItem />
         </div>
       </section>
-
-      {/* new task modal */}
-      <div
-        className={`${
-          isVisible ? "" : "hidden"
-        } bg-black/20 w-screen h-screen fixed top-0 bottom-0 left-0 right-0 flex`}
-      >
-        <div
-          className={`h-1/4 w-[30%] rounded-lg mx-auto my-auto transition-all bg-white shadow relative ${
-            isVisible ? "" : "hidden"
-          }`}
-        >
-          <h3 className="text-center my-4">Add New Task</h3>
-          <AddBtn
-            btnText={<MdClose />}
-            onClick={toggleModal}
-            isIcon={true}
-            iconClass={"absolute right-5 top-4"}
-          />
-          <div>
-            <p>test</p>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

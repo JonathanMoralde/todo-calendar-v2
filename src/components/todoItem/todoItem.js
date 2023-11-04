@@ -15,9 +15,8 @@ const TodoItem = () => {
     }
   }, [isVisible]);
 
-  console.log(inputRef);
   return (
-    <div className="bg-gray-100 rounded-lg py-2 px-4 mb-2">
+    <div className="bg-indigo-600 text-white rounded-lg py-2 px-4 mb-2">
       <div
         className={`flex justify-between items-center ${
           isVisible ? "hidden" : ""
@@ -46,12 +45,12 @@ const TodoItem = () => {
       {/* edit form */}
       <div className={`w-full ${isVisible ? "" : "hidden"}`}>
         <form className="flex justify-between items-center">
-          <label class="block ms-4">
+          <label className="block ms-4">
             <input
               ref={inputRef}
               type="text"
               placeholder="Todo Task Here"
-              class="mt-1 block w-full px-1 bg-gray-100 focus:outline-none
+              className="mt-1 block w-full px-1 bg-gray-100 focus:outline-none
       invalid:border-pink-500 invalid:text-pink-600
     "
             />

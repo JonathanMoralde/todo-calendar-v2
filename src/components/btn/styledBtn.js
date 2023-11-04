@@ -8,11 +8,11 @@ const AddBtn = ({ btnText, onClick, isIcon, iconClass }) => {
       className={`${
         isIcon
           ? iconClass
-          : "flex items-center bg-indigo-600 text-white  px-2 py-1 rounded-lg hover:bg-indigo-500 transition-all"
+          : "flex items-center text-indigo-600 font-medium  px-2 py-1 w-1/4"
       } `}
     >
       <span>
-        <AiOutlinePlus className={`me-1 text-sm ${isIcon ? "hidden" : ""}`} />
+        <AiOutlinePlus className={`me-1 ${isIcon ? "hidden" : ""}`} />
       </span>
       <span className={` ${isIcon ? "text-xl" : "text-sm"}`}>{btnText}</span>
     </button>

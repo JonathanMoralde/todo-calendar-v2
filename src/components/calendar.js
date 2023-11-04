@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { TodoCalendarContext } from "../context/TodoCalendartContext";
 import {
   LuChevronLeft,
   LuChevronRight,
@@ -7,6 +8,8 @@ import {
 } from "react-icons/lu";
 
 const Calendar = () => {
+  const { date, setDate } = useContext(TodoCalendarContext);
+
   const weekdays = [
     "Sunday",
     "Monday",
@@ -61,34 +64,6 @@ const Calendar = () => {
       prefixDays = generatePrefixDays(days);
     }
 
-    for (let i = 0; i < days; i++) {
-      let prefixDay;
-      if (isPrefix) {
-        prefixDay = new Date(year, month, prefixDays[i]).getDate();
-      }
-
-      content.push(
-        <div
-          className={`w-full h-16 bg-white rounded-lg hover:shadow-lg transition-all hover:cursor-pointer pt-4 pb-2 flex flex-col justify-between ${
-            today === i + 1 &&
-            isMonthDays === true &&
-            month === monthToday &&
-            year === yearToday
-              ? "border-2 border-indigo-300"
-              : ""
-          }`}
-        >
-          {isMonthDays ? <h3 className="text-xs">{i + 1}</h3> : <></>}
-          {isPrefix ? (
-            <h3 className="text-xs text-gray-400">{prefixDay}</h3>
-          ) : (
-            <></>
-          )}
-          <div className="w-3/5 h-2 mx-auto rounded-t-lg bg-red-400"></div>
-        </div>
-      );
-    }
-
     if (isNextMonth) {
       // Calculate and display days for the next mont
       const nextMonthDays = 42 - (days + blankDays); // 42 days in a 6x7 grid
@@ -96,9 +71,49 @@ const Calendar = () => {
         const nextMonthDate = new Date(year, month + 1, i + 1).getDate();
         content.push(
           <div
+            onClick={() => {
+              handleClick(i + 1, isMonthDays, isPrefix, isNextMonth);
+            }}
             className={`w-full h-16 bg-white rounded-lg text-gray-400 hover:shadow-lg transition-all hover:cursor-pointer py-4`}
           >
             <h3 className="text-xs text-gray-400 mb-1">{nextMonthDate}</h3>
+          </div>
+        );
+      }
+    } else {
+      for (let i = 0; i < days; i++) {
+        let prefixDay;
+        if (isPrefix) {
+          prefixDay = new Date(year, month, prefixDays[i]).getDate();
+        }
+
+        content.push(
+          <div
+            onClick={
+              isMonthDays && !isPrefix
+                ? () => {
+                    handleClick(i + 1, isMonthDays, isPrefix, isNextMonth);
+                  }
+                : () => {
+                    handleClick(prefixDay, isMonthDays, isPrefix, isNextMonth);
+                  }
+            }
+            className={`w-full h-16 bg-white rounded-lg hover:shadow-lg transition-all hover:cursor-pointer pt-4 pb-2 flex flex-col justify-between ${
+              today === i + 1 &&
+              isMonthDays === true &&
+              month === monthToday &&
+              year === yearToday
+                ? "border-2 border-indigo-300"
+                : ""
+            }`}
+          >
+            {isMonthDays ? <h3 className="text-xs">{i + 1}</h3> : <></>}
+            {isPrefix ? (
+              <h3 className="text-xs text-gray-400">{prefixDay}</h3>
+            ) : (
+              <></>
+            )}
+            <div className="w-3/5 h-2 mx-auto rounded-t-lg bg-red-400"></div>
           </div>
         );
       }
@@ -128,6 +143,21 @@ const Calendar = () => {
           setMonth(month - 1);
         }
       }
+    }
+  };
+
+  const handleClick = (day, isMonthDays, isPrefix, isNextMonth) => {
+    if (isMonthDays && !isPrefix && !isNextMonth) {
+      setDate(new Date(year, month, day));
+    } else if (!isMonthDays && isPrefix && !isNextMonth) {
+      // if month is === 1, then value = 11 (cannot 1 -1 to go back to 11)
+      const monthValue = month === 1 ? 11 : month - 1;
+      setDate(new Date(year, monthValue, day));
+    } else {
+      // if month is ===11 , then value = 1
+      const monthValue = month === 11 ? 1 : month + 1;
+
+      setDate(new Date(year, monthValue, day));
     }
   };
 
@@ -180,7 +210,8 @@ const Calendar = () => {
       </div>
       <div className="w-full grid grid-cols-7 grid-rows-6 gap-1">
         {displayDays(blankDays, false, true)}
-        {displayDays(lastDayOfMonth, true, false, true)}
+        {displayDays(lastDayOfMonth, true, false, false)}
+        {displayDays(lastDayOfMonth, false, false, true)}
       </div>
     </div>
   );
