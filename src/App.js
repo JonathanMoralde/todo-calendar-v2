@@ -2,6 +2,8 @@ import { useState } from "react";
 import Calendar from "./components/calendar";
 import List from "./components/list";
 import { TodoCalendarContext } from "./context/TodoCalendartContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [date, setDate] = useState(new Date());
@@ -38,6 +40,18 @@ function App() {
       <footer className="max-w-5xl mx-auto text-center">
         <p>Jhm. Jonathan Moralde &copy; 2023</p>
       </footer>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }

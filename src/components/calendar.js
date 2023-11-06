@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { TodoCalendarContext } from "../context/TodoCalendartContext";
 import {
   LuChevronLeft,
@@ -8,7 +8,7 @@ import {
 } from "react-icons/lu";
 
 const Calendar = () => {
-  const { date, setDate } = useContext(TodoCalendarContext);
+  const { setDate } = useContext(TodoCalendarContext);
 
   const weekdays = [
     "Sunday",
@@ -113,7 +113,7 @@ const Calendar = () => {
             ) : (
               <></>
             )}
-            <div className="w-3/5 h-2 mx-auto rounded-t-lg bg-red-400"></div>
+            {/* <div className="w-3/5 h-2 mx-auto rounded-t-lg bg-red-400"></div> */}
           </div>
         );
       }
@@ -133,12 +133,14 @@ const Calendar = () => {
       if (isNext) {
         if (month === 11) {
           setMonth(0);
+          setYear(year + 1);
         } else {
           setMonth(month + 1);
         }
       } else {
         if (month === 0) {
           setMonth(11);
+          setYear(year - 1);
         } else {
           setMonth(month - 1);
         }
@@ -149,15 +151,19 @@ const Calendar = () => {
   const handleClick = (day, isMonthDays, isPrefix, isNextMonth) => {
     if (isMonthDays && !isPrefix && !isNextMonth) {
       setDate(new Date(year, month, day));
+      console.log(year, month, day);
     } else if (!isMonthDays && isPrefix && !isNextMonth) {
       // if month is === 1, then value = 11 (cannot 1 -1 to go back to 11)
-      const monthValue = month === 1 ? 11 : month - 1;
-      setDate(new Date(year, monthValue, day));
+      const monthValue = month === 0 ? 11 : month - 1;
+      const yearValue = month === 0 ? year - 1 : year;
+      setDate(new Date(yearValue, monthValue, day));
+      console.log(yearValue, monthValue, day);
     } else {
       // if month is ===11 , then value = 1
-      const monthValue = month === 11 ? 1 : month + 1;
-
-      setDate(new Date(year, monthValue, day));
+      const monthValue = month === 11 ? 0 : month + 1;
+      const yearValue = month === 11 ? year + 1 : year;
+      setDate(new Date(yearValue, monthValue, day));
+      console.log(yearValue, monthValue, day);
     }
   };
 
@@ -208,7 +214,8 @@ const Calendar = () => {
           );
         })}
       </div>
-      <div className="w-full grid grid-cols-7 grid-rows-6 gap-1">
+
+      <div className="w-full h-auto grid grid-cols-7 grid-rows-6 gap-1">
         {displayDays(blankDays, false, true)}
         {displayDays(lastDayOfMonth, true, false, false)}
         {displayDays(lastDayOfMonth, false, false, true)}

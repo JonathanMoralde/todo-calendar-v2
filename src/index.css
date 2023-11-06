@@ -6,3 +6,25 @@ body {
   font-family: "Poppins", sans-serif;
   @apply bg-gray-200;
 }
+
+/* Set the width to 0 to make the scrollbar invisible when not used */
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300;
+  @apply rounded-lg;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}

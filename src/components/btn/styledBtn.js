@@ -8,7 +8,7 @@ const AddBtn = ({ btnText, onClick, isIcon, iconClass }) => {
       className={`${
         isIcon
           ? iconClass
-          : "flex items-center text-indigo-600 font-medium  px-2 py-1 w-1/4"
+          : "flex items-center text-indigo-600 font-medium  px-2 w-1/4 hover:opacity-80"
       } `}
     >
       <span>
