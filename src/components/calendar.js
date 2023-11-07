@@ -6,9 +6,14 @@ import {
   LuChevronsLeft,
   LuChevronsRight,
 } from "react-icons/lu";
+import { useEffect } from "react";
 
 const Calendar = () => {
-  const { setDate } = useContext(TodoCalendarContext);
+  const { setDate, allDates } = useContext(TodoCalendarContext);
+
+  useEffect(() => {
+    console.log("re-render");
+  }, [allDates]);
 
   const weekdays = [
     "Sunday",
@@ -57,6 +62,7 @@ const Calendar = () => {
     return index;
   };
 
+  // ! FUNCTION FOR DISPLAY DAYS IN CALENDAR
   const displayDays = (days, isMonthDays, isPrefix, isNextMonth) => {
     let content = [];
     let prefixDays;
@@ -69,6 +75,13 @@ const Calendar = () => {
       const nextMonthDays = 42 - (days + blankDays); // 42 days in a 6x7 grid
       for (let i = 0; i < nextMonthDays; i++) {
         const nextMonthDate = new Date(year, month + 1, i + 1).getDate();
+
+        // GETTING STATUS
+        const monthValue = month === 11 ? 0 : month + 1;
+        const yearValue = month === 11 ? year + 1 : year;
+        const dateString = `${yearValue}-${monthValue}-${nextMonthDate}`;
+        const dateIndex = allDates.map((d) => d.date).indexOf(dateString);
+
         content.push(
           <div
             onClick={() => {
@@ -77,6 +90,12 @@ const Calendar = () => {
             className={`w-full h-16 bg-white rounded-lg text-gray-400 hover:shadow-lg transition-all hover:cursor-pointer py-4`}
           >
             <h3 className="text-xs text-gray-400 mb-1">{nextMonthDate}</h3>
+
+            {dateIndex !== -1 && (
+              <div
+                className={`w-3/5 h-2 mx-auto rounded-t-lg bg-red-500`}
+              ></div>
+            )}
           </div>
         );
       }
@@ -85,6 +104,25 @@ const Calendar = () => {
         let prefixDay;
         if (isPrefix) {
           prefixDay = new Date(year, month, prefixDays[i]).getDate();
+        }
+
+        // DISPLAYING STATUS
+        let dateIndex;
+        const monthValue = month === 0 ? 11 : month - 1;
+        if (isPrefix) {
+          const yearValue = month === 0 ? year - 1 : year;
+          const dateString = `${yearValue}-${monthValue}-${prefixDay}`;
+          dateIndex = allDates.map((d) => d.date).indexOf(dateString);
+        } else {
+          const dateString = `${year}-${month}-${i + 1}`;
+          dateIndex = allDates.map((d) => d.date).indexOf(dateString);
+        }
+        // GETTING STATUS
+        let status;
+        if (dateIndex !== -1) {
+          const singleDate = allDates[dateIndex];
+          // Use Array.every() to check if all tasks are completed
+          status = singleDate.tasks.every((t) => t.completed);
         }
 
         content.push(
@@ -113,7 +151,13 @@ const Calendar = () => {
             ) : (
               <></>
             )}
-            {/* <div className="w-3/5 h-2 mx-auto rounded-t-lg bg-red-400"></div> */}
+            {dateIndex !== -1 && (
+              <div
+                className={`w-3/5 h-2 mx-auto rounded-t-lg  ${
+                  status ? "bg-green-400" : "bg-red-400"
+                }`}
+              ></div>
+            )}
           </div>
         );
       }
@@ -122,6 +166,7 @@ const Calendar = () => {
     return content;
   };
 
+  // FUNCTION FOR CHANGING MONTH & YEAR
   const changeDisplay = (isNext, isYear) => {
     if (isYear) {
       if (isNext) {
@@ -148,6 +193,7 @@ const Calendar = () => {
     }
   };
 
+  // FUNCTION FOR SELECTING DATE
   const handleClick = (day, isMonthDays, isPrefix, isNextMonth) => {
     if (isMonthDays && !isPrefix && !isNextMonth) {
       setDate(new Date(year, month, day));

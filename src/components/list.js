@@ -7,35 +7,37 @@ import { toast } from "react-toastify";
 import TodoItemSkeleton from "./todoItem/todoItem_skeleton";
 
 const List = () => {
-  const { date } = useContext(TodoCalendarContext);
+  const { date, allDates, setAllDates } = useContext(TodoCalendarContext);
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-us", options);
   const dateString = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 
   const [value, setValue] = useState("");
   const [data, setData] = useState([]);
-  let componentMounted = true;
   const [loading, setLoading] = useState(true);
 
+  // FETCH TASK FOR SELECTED DATE
   useEffect(() => {
     const fetchData = async () => {
+      setData([]); //fix for first element not updating display
+      setLoading(true);
       const url = `http://localhost:5000/api/getTask/${dateString}`;
 
       try {
         const result = await axios.get(url);
         console.log(result.data);
-        if (componentMounted) {
-          setData(result.data);
-          setLoading(false);
-        }
+
+        setData(result.data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [date]);
 
+  // FUNCTION FOR INSERTING TASK
   const handleAdd = async (e) => {
     e.preventDefault();
 
@@ -59,7 +61,6 @@ const List = () => {
 
           task._id = response.data.taskId;
 
-          console.log(task);
           setData([...data, task]);
           setValue("");
         })
@@ -70,6 +71,17 @@ const List = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const dateIndex = allDates.map((d) => d.date).indexOf(dateString);
+    if (dateIndex !== -1) {
+      let newData = allDates;
+      newData[dateIndex].tasks = data;
+
+      setAllDates(newData);
+      console.log(`data after:`, allDates[dateIndex].tasks);
+    }
+  }, [data]);
 
   return (
     <>

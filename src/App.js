@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Calendar from "./components/calendar";
 import List from "./components/list";
 import { TodoCalendarContext } from "./context/TodoCalendartContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 function App() {
   const [date, setDate] = useState(new Date());
+  const [allDates, setAllDates] = useState([]);
+
+  useEffect(() => {
+    const fetchDates = async () => {
+      const url = "http://localhost:5000/api/getDates";
+
+      const result = await axios.get(url);
+
+      setAllDates(result.data);
+    };
+
+    fetchDates();
+  }, []);
 
   return (
     <>
@@ -17,7 +31,9 @@ function App() {
           </h1>
         </header>
         <section className="flex">
-          <TodoCalendarContext.Provider value={{ date, setDate }}>
+          <TodoCalendarContext.Provider
+            value={{ date, setDate, allDates, setAllDates }}
+          >
             <Calendar />
             <List />
           </TodoCalendarContext.Provider>
