@@ -63,6 +63,16 @@ const List = () => {
 
           setData([...data, task]);
           setValue("");
+
+          const updatedAllDates = [...allDates];
+          const dateIndex = updatedAllDates
+            .map((d) => d.date)
+            .indexOf(dateString);
+          if (dateIndex !== -1) {
+            updatedAllDates[dateIndex].tasks = [...data, task];
+
+            setAllDates(updatedAllDates);
+          }
         })
         .catch((e) => {
           console.log(e);
@@ -71,17 +81,6 @@ const List = () => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    const dateIndex = allDates.map((d) => d.date).indexOf(dateString);
-    if (dateIndex !== -1) {
-      let newData = allDates;
-      newData[dateIndex].tasks = data;
-
-      setAllDates(newData);
-      console.log(`data after:`, allDates[dateIndex].tasks);
-    }
-  }, [data]);
 
   return (
     <>
@@ -121,6 +120,7 @@ const List = () => {
                   index={index}
                   data={data}
                   setData={setData}
+                  dateString={dateString}
                 />
               );
             })

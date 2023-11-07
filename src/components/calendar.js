@@ -7,13 +7,10 @@ import {
   LuChevronsRight,
 } from "react-icons/lu";
 import { useEffect } from "react";
+import StatusIndicator from "./status/statusIndicator";
 
 const Calendar = () => {
   const { setDate, allDates } = useContext(TodoCalendarContext);
-
-  useEffect(() => {
-    console.log("re-render");
-  }, [allDates]);
 
   const weekdays = [
     "Sunday",
@@ -92,9 +89,7 @@ const Calendar = () => {
             <h3 className="text-xs text-gray-400 mb-1">{nextMonthDate}</h3>
 
             {dateIndex !== -1 && (
-              <div
-                className={`w-3/5 h-2 mx-auto rounded-t-lg bg-red-500`}
-              ></div>
+              <StatusIndicator allDates={allDates} dateIndex={dateIndex} />
             )}
           </div>
         );
@@ -118,12 +113,12 @@ const Calendar = () => {
           dateIndex = allDates.map((d) => d.date).indexOf(dateString);
         }
         // GETTING STATUS
-        let status;
-        if (dateIndex !== -1) {
-          const singleDate = allDates[dateIndex];
-          // Use Array.every() to check if all tasks are completed
-          status = singleDate.tasks.every((t) => t.completed);
-        }
+        // let status;
+        // if (dateIndex !== -1) {
+        //   const singleDate = allDates[dateIndex];
+        //   // Use Array.every() to check if all tasks are completed
+        //   status = singleDate.tasks.every((t) => t.completed);
+        // }
 
         content.push(
           <div
@@ -152,11 +147,12 @@ const Calendar = () => {
               <></>
             )}
             {dateIndex !== -1 && (
-              <div
-                className={`w-3/5 h-2 mx-auto rounded-t-lg  ${
-                  status ? "bg-green-400" : "bg-red-400"
-                }`}
-              ></div>
+              // <div
+              //   className={`w-3/5 h-2 mx-auto rounded-t-lg  ${
+              //     status ? "bg-green-400" : "bg-red-400"
+              //   }`}
+              // ></div>
+              <StatusIndicator allDates={allDates} dateIndex={dateIndex} />
             )}
           </div>
         );

@@ -1,11 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import axios from "axios";
 import { MdEdit, MdDelete, MdCheck, MdClose } from "react-icons/md";
 import { toast } from "react-toastify";
+import { TodoCalendarContext } from "../../context/TodoCalendartContext";
 
-const TodoItem = ({ _id, description, completed, index, data, setData }) => {
+const TodoItem = ({
+  _id,
+  description,
+  completed,
+  index,
+  data,
+  setData,
+  dateString,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [updatedDescription, setUpdatedDescription] = useState(description);
+  const { allDates, setAllDates } = useContext(TodoCalendarContext);
 
   const inputRef = useRef(null);
 
@@ -21,6 +31,7 @@ const TodoItem = ({ _id, description, completed, index, data, setData }) => {
   }, [isVisible]);
 
   const [isCheck, setIsCheck] = useState(completed);
+
   const onChangeHandler = async (e) => {
     const updatedIsCheck = !isCheck; // Toggle the state
 
@@ -35,6 +46,14 @@ const TodoItem = ({ _id, description, completed, index, data, setData }) => {
 
       // Update the state based on the server response
       setIsCheck(updatedIsCheck);
+
+      const updatedAllDates = [...allDates];
+      const dateIndex = updatedAllDates.map((d) => d.date).indexOf(dateString);
+      if (dateIndex !== -1) {
+        updatedAllDates[dateIndex].tasks[index].completed = updatedIsCheck;
+
+        setAllDates(updatedAllDates);
+      }
     } catch (error) {
       console.log(error);
     }
