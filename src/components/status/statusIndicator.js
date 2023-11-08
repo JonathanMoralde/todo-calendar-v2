@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
+import { TodoCalendarContext } from "../../context/TodoCalendartContext";
 
 const StatusIndicator = ({ allDates, dateIndex, month, year }) => {
   const [completed, setCompleted] = useState(false);
+  // const { allDates } = useContext(TodoCalendarContext);
 
   useEffect(() => {
     const singleDate = allDates[dateIndex];

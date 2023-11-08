@@ -56,7 +56,6 @@ const List = () => {
       await axios
         .post(url, { date: dateString, task: task })
         .then((response) => {
-          console.log(response.data);
           toast.success(response.data.message);
 
           task._id = response.data.taskId;
@@ -72,6 +71,8 @@ const List = () => {
             updatedAllDates[dateIndex].tasks = [...data, task];
 
             setAllDates(updatedAllDates);
+          } else {
+            setAllDates([...allDates, { date: dateString, tasks: [task] }]);
           }
         })
         .catch((e) => {
