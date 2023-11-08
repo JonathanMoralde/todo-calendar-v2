@@ -89,7 +89,12 @@ const Calendar = () => {
             <h3 className="text-xs text-gray-400 mb-1">{nextMonthDate}</h3>
 
             {dateIndex !== -1 && (
-              <StatusIndicator allDates={allDates} dateIndex={dateIndex} />
+              <StatusIndicator
+                allDates={allDates}
+                dateIndex={dateIndex}
+                month={month}
+                year={year}
+              />
             )}
           </div>
         );
@@ -152,7 +157,12 @@ const Calendar = () => {
               //     status ? "bg-green-400" : "bg-red-400"
               //   }`}
               // ></div>
-              <StatusIndicator allDates={allDates} dateIndex={dateIndex} />
+              <StatusIndicator
+                allDates={allDates}
+                dateIndex={dateIndex}
+                month={month}
+                year={year}
+              />
             )}
           </div>
         );
