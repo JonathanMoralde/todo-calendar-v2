@@ -21,7 +21,7 @@ const List = () => {
     const fetchData = async () => {
       setData([]); //fix for first element not updating display
       setLoading(true);
-      const url = `http://localhost:5000/api/getTask/${dateString}`;
+      const url = `https://todo-calendar-v2-api.onrender.com/api/getTask/${dateString}`;
 
       try {
         const result = await axios.get(url);
@@ -35,7 +35,7 @@ const List = () => {
     };
 
     fetchData();
-  }, [date]);
+  }, [date, dateString]);
 
   // FUNCTION FOR INSERTING TASK
   const handleAdd = async (e) => {
@@ -50,7 +50,7 @@ const List = () => {
       completed: false,
     };
 
-    const url = "http://localhost:5000/api/addTask";
+    const url = "https://todo-calendar-v2-api.onrender.com/api/addTask";
 
     try {
       await axios

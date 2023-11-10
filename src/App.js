@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     const fetchDates = async () => {
-      const url = "http://localhost:5000/api/getDates";
+      const url = "https://todo-calendar-v2-api.onrender.com/api/getDates";
 
       const result = await axios.get(url);
 

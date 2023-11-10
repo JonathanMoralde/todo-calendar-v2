@@ -6,7 +6,6 @@ import {
   LuChevronsLeft,
   LuChevronsRight,
 } from "react-icons/lu";
-import { useEffect } from "react";
 import StatusIndicator from "./status/statusIndicator";
 
 const Calendar = () => {
@@ -117,13 +116,6 @@ const Calendar = () => {
           const dateString = `${year}-${month}-${i + 1}`;
           dateIndex = allDates.map((d) => d.date).indexOf(dateString);
         }
-        // GETTING STATUS
-        // let status;
-        // if (dateIndex !== -1) {
-        //   const singleDate = allDates[dateIndex];
-        //   // Use Array.every() to check if all tasks are completed
-        //   status = singleDate.tasks.every((t) => t.completed);
-        // }
 
         content.push(
           <div
@@ -152,11 +144,6 @@ const Calendar = () => {
               <></>
             )}
             {dateIndex !== -1 && (
-              // <div
-              //   className={`w-3/5 h-2 mx-auto rounded-t-lg  ${
-              //     status ? "bg-green-400" : "bg-red-400"
-              //   }`}
-              // ></div>
               <StatusIndicator
                 allDates={allDates}
                 dateIndex={dateIndex}

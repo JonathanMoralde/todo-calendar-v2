@@ -39,7 +39,8 @@ const TodoItem = ({
   const onChangeHandler = async (e) => {
     const updatedIsCheck = !isCheck; // Toggle the state
 
-    const url = "http://localhost:5000/api/updateTaskStatus";
+    const url =
+      "https://todo-calendar-v2-api.onrender.com/api/updateTaskStatus";
     try {
       const result = await axios.put(url, {
         taskId: _id,
@@ -64,7 +65,7 @@ const TodoItem = ({
   };
 
   const handleEdit = async () => {
-    const url = "http://localhost:5000/api/updateTask";
+    const url = "https://todo-calendar-v2-api.onrender.com/api/updateTask";
 
     const updatedTask = inputRef.current.value;
 
@@ -79,7 +80,7 @@ const TodoItem = ({
 
   console.log(data);
   const handleDel = async () => {
-    const url = `http://localhost:5000/api/deleteTask/${_id}`;
+    const url = `https://todo-calendar-v2-api.onrender.com/api/deleteTask/${_id}`;
 
     await axios
       .delete(url)
