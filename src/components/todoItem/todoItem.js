@@ -14,8 +14,12 @@ const TodoItem = ({
   dateString,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [updatedDescription, setUpdatedDescription] = useState(description);
+  const [updatedDescription, setUpdatedDescription] = useState("");
   const { allDates, setAllDates } = useContext(TodoCalendarContext);
+
+  useEffect(() => {
+    setUpdatedDescription(description);
+  }, [data, description]);
 
   const inputRef = useRef(null);
 
@@ -73,6 +77,7 @@ const TodoItem = ({
     toggleEditForm();
   };
 
+  console.log(data);
   const handleDel = async () => {
     const url = `http://localhost:5000/api/deleteTask/${_id}`;
 
@@ -80,8 +85,10 @@ const TodoItem = ({
       .delete(url)
       .then((response) => {
         toast.success(response.data.message);
-        const newData = data.filter((task, i) => i !== index);
+        // const newData = data.filter((task, i) => i !== index);
+        const newData = data.filter((task) => task._id !== _id);
         setData(newData);
+        console.log(newData);
       })
       .catch((e) => {
         toast.danger(e);
